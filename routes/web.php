@@ -19,7 +19,6 @@ Route::get('/', function () {
 Route::resource('violations', 'ViolationController');
 
 
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
