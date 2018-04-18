@@ -26,4 +26,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function violations()
+    {
+        return $this->hasMany(Violation::class, 'officer_id');
+    }
 }

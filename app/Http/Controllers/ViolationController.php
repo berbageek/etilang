@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Violation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ViolationController extends Controller
 {
@@ -12,9 +13,9 @@ class ViolationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Violation::latest()->paginate(10);
+        $items = $request->user()->violations()->paginate(10);
 
         return view('violations.index', ['items' => $items]);
     }
@@ -53,9 +54,9 @@ class ViolationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Violation $violation)
     {
-        //
+        dd($violation);
     }
 
     /**
@@ -64,11 +65,13 @@ class ViolationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, Violation $violation)
     {
-        $violation = Violation::find($id);
+        if ($request->user()->can('edit-violation', $violation)) {
+            return view('violations.edit', ['violation' => $violation]);
+        }
 
-        return view('violations.edit', ['violation' => $violation]);
+        abort(401);
     }
 
     /**
@@ -78,9 +81,13 @@ class ViolationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Violation $violation)
     {
-        die('PR: Data berhasil diubah');
+        $violation->violator_identity_number = $request->get('violator_identity_number');
+        $violation->violator_name            = $request->get('violator_name');
+        $violation->save();
+
+        return redirect()->route('violations.index')->with('success', 'Data berhasil disimpan.');
     }
 
     /**
@@ -89,8 +96,10 @@ class ViolationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Violation $violation)
     {
-        //
+        $violation->delete();
+
+        return redirect()->route('violations.index')->with('success', 'Data berhasil dihapus.');
     }
 }

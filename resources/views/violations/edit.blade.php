@@ -6,7 +6,7 @@
             <div class="col">
                 <h3>Edit Pelanggaran</h3>
 
-                <form action="{{ route('violations.update', $violation->id) }}" method="post">
+                <form action="{{ route('violations.update', $violation) }}" method="post">
 
                     {{ csrf_field() }}
                     @method('PUT')
