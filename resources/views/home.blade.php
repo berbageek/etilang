@@ -14,7 +14,13 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <h5>Daftar Pos Jaga</h5>
+                    <ul>
+                        @foreach (auth()->user()->stations as $station)
+                        <li>{{ $station->address }}</li>
+                        @endforeach
+                    </ul>
+
                 </div>
             </div>
         </div>

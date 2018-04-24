@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Violation::class, 'officer_id');
     }
+
+    public function stations()
+    {
+        return $this->belongsToMany(Station::class, 'station_user');
+    }
 }
