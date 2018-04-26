@@ -32,7 +32,7 @@ class SendNotificationToOfficer
          * @var User $user
          */
         $violation = $event->violation;
-        $user      = $violation->user();
+        $user      = $violation->user;
 
         $user->notify(new ViolationCreatedOfficer($violation));
     }
