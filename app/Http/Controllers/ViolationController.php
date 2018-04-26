@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ViolationStore;
+use App\Services\ViolationService;
 use App\Violation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ViolationController extends Controller
 {
+    /**
+     * @var ViolationService
+     */
+    private $service;
+
+    /**
+     * ViolationController constructor.
+     */
+    public function __construct(ViolationService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,15 +50,9 @@ class ViolationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ViolationStore $request)
     {
-        $violation                           = new Violation();
-        $violation->violator_identity_number = $request->violator_identity_number;
-        $violation->violator_name            = $request->violator_name;
-        $violation->status                   = 'NEW';
-
-        $user = $request->user();
-        $user->violations()->save($violation);
+        $this->service->create($request->all());
 
         return redirect()->route('violations.index');
     }
@@ -84,9 +92,7 @@ class ViolationController extends Controller
      */
     public function update(Request $request, Violation $violation)
     {
-        $violation->violator_identity_number = $request->get('violator_identity_number');
-        $violation->violator_name            = $request->get('violator_name');
-        $violation->save();
+        $this->service->update($violation, $request->all());
 
         return redirect()->route('violations.index')->with('success', 'Data berhasil disimpan.');
     }

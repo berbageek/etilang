@@ -10,4 +10,9 @@ class Station extends Model
     {
         return $this->belongsToMany(User::class, 'station_user');
     }
+
+    public function violations()
+    {
+        return $this->hasMany(Violation::class);
+    }
 }

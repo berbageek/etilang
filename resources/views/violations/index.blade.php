@@ -19,6 +19,7 @@
                 <tr>
                     <th>Nomor Pelanggaran</th>
                     <th>Nama Petugas</th>
+                    <th>Pos Jaga</th>
                     <th>Nama Pelanggar</th>
                     <th>Identitas Pelanggar</th>
                     <th>Aksi</th>
@@ -26,10 +27,11 @@
                 </thead>
                 <tbody>
 
-                @foreach ($items as $item)
+                @forelse ($items as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->user->name }}</td>
+                    <td>{{ $item->station->address }}</td>
                     <td>{{ $item->violator_name }}</td>
                     <td>{{ $item->violator_identity_number }}</td>
                     <td>
@@ -41,7 +43,11 @@
                         </form>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="6">Belum ada data.</td>
+                </tr>
+                @endforelse
 
                 </tbody>
             </table>
