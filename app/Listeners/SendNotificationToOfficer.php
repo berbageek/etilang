@@ -29,6 +29,8 @@ class SendNotificationToOfficer
     public function handle(ViolationCreated $event)
     {
         /**
+         * Notifikasi ke Petugas
+         *
          * @var User $user
          */
         $violation = $event->violation;

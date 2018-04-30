@@ -23,8 +23,15 @@ class UsersSeeder extends Seeder
             'password' => bcrypt('secret'),
         ]);
 
-        factory(App\User::class, 50)->create()->each(function ($user) {
+
+        App\User::create([
+            'name' => 'Verifikator',
+            'email' => 'verifikator@gmail.com',
+            'password' => bcrypt('secret'),
+        ]);
+
+         factory(App\User::class, 50)->create()->each(function ($user) {
             $user->violations()->saveMany(factory(App\Violation::class)->times(10)->make());
-        });
+         });
     }
 }

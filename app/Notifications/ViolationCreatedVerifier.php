@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ViolationCreatedOfficer extends Notification
+class ViolationCreatedVerifier extends Notification
 {
     use Queueable;
     /**
@@ -19,7 +19,7 @@ class ViolationCreatedOfficer extends Notification
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param Violation $violation
      */
     public function __construct(Violation $violation)
     {
@@ -46,8 +46,8 @@ class ViolationCreatedOfficer extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Berhasil membuat pelanggaran baru.')
-                    ->line('Anda baru saja membuat laporan pelanggaran baru.')
+                    ->subject('Pelanggaran butuh Verifikasi.')
+                    ->line('Ada data pelanggaran baru membutuhkan verifikasi Anda.')
                     ->line('Nama Pelanggar: ' . $this->violation->violator_name)
                     ->line('Terimakasih banyak sudah menggunakan aplikasi E-Tilang.');
     }
